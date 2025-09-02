@@ -79,5 +79,20 @@ public class RecordsController {
         repository.deleteById(id);
     }
 
+    @PutMapping("/{id}")
+    public RecordsModel updateJournal(@PathVariable Long id, @RequestBody RecordsModel updatedJournal) {
+        return repository.findById(id)
+                .map(existingJournal -> {
+                    existingJournal.setTitle(updatedJournal.getTitle());
+                    existingJournal.setDestination(updatedJournal.getDestination());
+                    existingJournal.setRating(updatedJournal.getRating());
+                    existingJournal.setNotes(updatedJournal.getNotes());
+                    existingJournal.setTripDate(updatedJournal.getTripDate());
 
+                    return repository.save(existingJournal);
+                })
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Journal entry not found with id " + id
+                ));
+    }
 }
