@@ -26,15 +26,28 @@ public class RecordsController {
 
     @PostMapping
     public RecordsModel createJournal(@RequestBody RecordsModel journal) {
+        if (journal.getTitle() == null || journal.getTitle().trim().isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Title is required"
+            );
+        }
+
+        if (journal.getDestination() == null || journal.getDestination().trim().isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Destination is required"
+            );
+        }
+
         if (journal.getTripDate() == null) {
             journal.setTripDate(LocalDate.now()); // default to today if not provided
         }
-        journal.setCreatedAt(LocalDateTime.now());
-        if (journal.getRating() < 1 || journal.getRating() > 5) {
+
+        if (journal.getRating() == null || journal.getRating() < 1 || journal.getRating() > 5) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Rating must be between 1 and 5"
             );
         }
+        journal.setCreatedAt(LocalDateTime.now());
         return repository.save(journal);
     }
 
@@ -65,4 +78,6 @@ public class RecordsController {
     public void deleteJournal(@PathVariable Long id) {
         repository.deleteById(id);
     }
+
+
 }
