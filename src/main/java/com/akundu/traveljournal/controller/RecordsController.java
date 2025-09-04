@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/v1/journals")
 public class RecordsController {
@@ -25,27 +26,9 @@ public class RecordsController {
     }
 
     @PostMapping
-    public RecordsModel createJournal(@RequestBody RecordsModel journal) {
-        if (journal.getTitle() == null || journal.getTitle().trim().isEmpty()) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Title is required"
-            );
-        }
-
-        if (journal.getDestination() == null || journal.getDestination().trim().isEmpty()) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Destination is required"
-            );
-        }
-
+    public RecordsModel createJournal(@Valid @RequestBody RecordsModel journal) {
         if (journal.getTripDate() == null) {
-            journal.setTripDate(LocalDate.now()); // default to today if not provided
-        }
-
-        if (journal.getRating() == null || journal.getRating() < 1 || journal.getRating() > 5) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Rating must be between 1 and 5"
-            );
+            journal.setTripDate(LocalDate.now());
         }
         journal.setCreatedAt(LocalDateTime.now());
         return repository.save(journal);
@@ -80,7 +63,10 @@ public class RecordsController {
     }
 
     @PutMapping("/{id}")
-    public RecordsModel updateJournal(@PathVariable Long id, @RequestBody RecordsModel updatedJournal) {
+    public RecordsModel updateJournal(@PathVariable Long id, @Valid @RequestBody RecordsModel updatedJournal) {
+        if (updatedJournal.getTripDate() == null) {
+            updatedJournal.setTripDate(LocalDate.now());
+        }
         return repository.findById(id)
                 .map(existingJournal -> {
                     existingJournal.setTitle(updatedJournal.getTitle());
