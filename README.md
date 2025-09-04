@@ -33,7 +33,7 @@ I wanted to make sure the endpoint names were intuitive, and didn't make it too 
     - `GET http://localhost:8080/api/v1/journals/filter?rating=5` Get all entries with rating 5
     - `GET http://localhost:8080/api/v1/journals/filter?date=2025-09-01` Get all entries from September 1
     - `GET http://localhost:8080/api/v1/journals/filter?rating=3&destination=Kolkata,%20India` Get all entries with a rating of 3 in Kolkata, India
-    - `GET http://localhost:8080/api/v1/journals/filter?rating=3&page=1&size=5&sort=title,asc` Get all entries with rating of 3, sorted ascending by title
+    - `GET http://localhost:8080/api/v1/journals/filter?rating=3&sort=title,asc` Get all entries with rating of 3, sorted ascending by title
 
 **Challenges:**
 - I haven't really done error handling before, so figuring out a good way to do that was a challenge. I did some research about the GlobalExceptionHandler class, and implementing it to handle the different errors the API could encounter, and gracefully show the error, rather than the huge default error.
