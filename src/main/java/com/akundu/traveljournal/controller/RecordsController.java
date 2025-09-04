@@ -2,6 +2,12 @@ package com.akundu.traveljournal.controller;
 
 import com.akundu.traveljournal.model.RecordsModel;
 import com.akundu.traveljournal.repository.RecordsRepository;
+import com.akundu.traveljournal.specification.RecordsSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -60,21 +66,21 @@ public class RecordsController {
     }
 
     @GetMapping("/filter")
-    public List<RecordsModel> filterJournals(
+    public Page<RecordsModel> filterJournals(
             @RequestParam(required = false) Integer rating,
-            @RequestParam(required = false) String date) {
+            @RequestParam(required = false) String date,
+            @RequestParam(required = false) String destination,
+            @PageableDefault(size = 10, sort = "tripDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
         LocalDate tripDate = (date != null) ? LocalDate.parse(date) : null;
 
-        if (rating != null && tripDate != null) {
-            return repository.findByRatingAndTripDate(rating, tripDate);
-        } else if (rating != null) {
-            return repository.findByRating(rating);
-        } else if (tripDate != null) {
-            return repository.findByTripDate(tripDate);
-        } else {
-            return repository.findAll();
-        }
+        Specification<RecordsModel> spec = Specification.allOf(
+                RecordsSpecification.hasRating(rating),
+                RecordsSpecification.hasTripDate(tripDate),
+                RecordsSpecification.hasDestination(destination)
+        );
+
+        return repository.findAll(spec, pageable);
     }
 
     @DeleteMapping("/{id}")
