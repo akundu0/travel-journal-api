@@ -46,4 +46,5 @@ I wanted to make sure the endpoint names were intuitive, and didn't make it too 
 - Add security and support for multiple users (each user can only see their journals)
 - Add tags to entries to further filter (beach, family, etc.)
 - Add a Swagger UI for easier testing (I haven't actually done this before, but I don't think it would be that difficult.)
-- More aggregated endpoints
+- More aggregated endpoints (most visited destination, )
+- Add a front end!
