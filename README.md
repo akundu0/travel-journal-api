@@ -41,9 +41,9 @@ I wanted to make sure the endpoint names were intuitive, and didn't make it too 
 
 
 **If I had more time:**
-- Support for adding images and other files (receipts, tickets, itineraries, etc): would be so fun, and make file storage more organized
+- Support for adding images and other files (receipts, tickets, itineraries, etc): make file storage more organized!
 - Add security and support for multiple users (each user can only see their journals)
 - Add tags to entries to further filter (beach, family, etc.)
-- Add a Swagger UI for easier testing (I haven't actually done this before, but I don't think it would be that difficult.)
+- Add a Swagger UI for easier testing
 - More aggregated endpoints (most visited destination, map of destinations, top rated destination, word cloud, etc.)
 - Add a front end!
